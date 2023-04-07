@@ -207,43 +207,32 @@ bool ExtractZip(std::string filePath, std::string extractPath, COORD* coords, ch
                 char filePathCstr[MAX_PATH];
                 size_t written = snprintf(filePathCstr, MAX_PATH, "%s%s", extractPath.c_str(), fileName);
 
-                //std::cout << "\n" << filePathCstr << std::endl;
+                if (formatDir(filePathCstr, pathToChop))
+                {
+                    FILE* file = fopen(filePathCstr, "wb+");
 
-                //if (written >= MAX_PATH)
-                //{
-
-                    if (formatDir(filePathCstr, pathToChop))
+                    if (file) //Check we actually managed to open the file, if we didint its probably because a directory doesnt exist
                     {
-                        FILE* file = fopen(filePathCstr, "wb+");
 
-                        if (file) //Check we actually managed to open the file, if we didint its probably because a directory doesnt exist
+                        ReadZipFileFromIndexIntoFile(zip, i, file);
+                        fclose(file);
+                    }
+                    else
+                    {
+                        createNeededDirs(filePathCstr); //Try to create all the directories 
+                        file = fopen(filePathCstr, "wb+"); //Try opening the file again
+                        if (file)
                         {
-
                             ReadZipFileFromIndexIntoFile(zip, i, file);
                             fclose(file);
                         }
-                        else
+                        else //If we cant open a file at this point something has gone very wrong and we should abort the install of the sdk
                         {
-                            createNeededDirs(filePathCstr); //Try to create all the directories 
-                            file = fopen(filePathCstr, "wb+"); //Try opening the file again
-                            if (file)
-                            {
-                                ReadZipFileFromIndexIntoFile(zip, i, file);
-                                fclose(file);
-                            }
-                            else //If we cant open a file at this point something has gone very wrong and we should abort the install of the sdk
-                            {
-                                return false;
-                            }
-                            
+                            return false;
                         }
+                            
                     }
-               // }
-               // else
-               // {
-               //     std::cout << "The file path of your install folder is too long" << std::endl;
-               //     return false;
-               // }
+                }
             }
 
         }
@@ -255,7 +244,7 @@ bool ExtractZip(std::string filePath, std::string extractPath, COORD* coords, ch
     }
     else
     {
-        std::cout << "Failed to open the a zip file" << std::endl;
+        std::cout << "Failed to open the" << filePath << "zip file" << std::endl;
         return false;
     }
 

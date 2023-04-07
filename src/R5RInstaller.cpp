@@ -15,7 +15,7 @@ const char* flowstateRequiredFiles = "https://api.github.com/repos/ColombianGuy/
 const char* flowstateDLPath = "\\R5pc_r5launch_N1094_CL456479_2019_10_30_05_20_PM\\Flowstate_scripts.zip";
 const char* flowstateExtractPath = "\\R5pc_r5launch_N1094_CL456479_2019_10_30_05_20_PM\\platform\\scripts\\";
 const char* flowstateReqFilesDLPath = "\\R5pc_r5launch_N1094_CL456479_2019_10_30_05_20_PM\\Flowstate.-.Required.Files.zip";
-const char* flowstateReqFilesExtractPath = "";
+const char* flowstateReqFilesExtractPath = "\\R5pc_r5launch_N1094_CL456479_2019_10_30_05_20_PM\\";
 
 const char* sdkDLPath = "\\R5pc_r5launch_N1094_CL456479_2019_10_30_05_20_PM\\depot.zip";
 const char* sdkExtractPath = "\\R5pc_r5launch_N1094_CL456479_2019_10_30_05_20_PM\\";
@@ -106,7 +106,7 @@ void StartInstall(void* dataIn)
             std::cout << "\nInstall Failed!!!" << std::endl;
             return;
         }
-        
+
         if (data->shouldInstallFlowstate)
         {
 

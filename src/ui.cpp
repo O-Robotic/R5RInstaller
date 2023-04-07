@@ -230,8 +230,8 @@ char* PrintFiller(size_t size, float fillAmount)
 {
     if (size > 1)
     {
-    char* filler = (char*)malloc(size + 1);
-    filler[size] = '\0';
+        char* filler = (char*)malloc(size + 1);
+        filler[size] = '\0';
     
         int i = 0;
         char* fillerChar = &filler[0];
@@ -253,8 +253,8 @@ char* PrintFiller(size_t size, float fillAmount)
         return filler;
     }
 
-    char* filler = (char*)malloc(1);
-    *filler = ' ';
+    char* filler = (char*)malloc(2);
+    *filler = ' \0';
     return filler;
 }
 
