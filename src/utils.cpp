@@ -224,9 +224,17 @@ bool ExtractZip(std::string filePath, std::string extractPath, COORD* coords, ch
                         }
                         else //If we cant open a file at this point something has gone very wrong and we should abort the install of the sdk
                         {
-                            return false;
-                        }
+                           
+                            DWORD err = GetLastError();
+
+                            switch (err)
+                            {
+                            case(ERROR_SHARING_VIOLATION):
+                                std::cout << "\nAnother program is using your chosen install folder\nClose any programs you may have open that could be using this folder" << std::endl;
+                            }
                             
+                           return false;
+                        }  
                     }
                 }
             }
