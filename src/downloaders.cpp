@@ -27,9 +27,9 @@ nlohmann::json GetGithubJson(const char* url)
         if (res != CURLE_OK)
         {
             std::cout << "Failed to download github file manifest" << std::endl;
-            return false;
             curl_slist_free_all(list);
             curl_easy_cleanup(pCurl);
+            return false;
         }
 
         curl_slist_free_all(list);

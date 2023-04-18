@@ -1,12 +1,6 @@
 #pragma once 
 #include "pch.h"
 
-struct StartInstallData
-{
-    std::wstring installPath;
-    bool shouldInstallFlowstate;
-};
-
 
 struct progress
 {
@@ -72,6 +66,8 @@ public:
 
     virtual void DrawElement();
 
+    virtual void ChangeText(std::string& newText);
+   
     COORD GetCoords()
     {
         return position;
@@ -83,14 +79,13 @@ public:
 protected:
     COORD position{ 0 };      //If this is a toggle it will be the position of the toggle indicator
     WORD Colour = 0;
-    const char* text;
+    std::string text;
 };
-
 
 class Toggle : public UIElement
 {
 public:
-    Toggle(const char* inText, int x, int y, bool* toggle)
+    Toggle(const char* inText, SHORT x, SHORT y, bool* toggle)
     {
         position.X = x;
         position.Y = y;
@@ -109,11 +104,10 @@ public:
 
 
 private:
-    const char* text;
     COORD togglePos{ 0 };
     const char* toggleElementOn = "*";
     const char* toggleElementOff = " ";
-    const char* toggleBoarder[2]{ "<",">" };
+    const char* toggleBorder[2]{ "<",">" };
     bool* pToggle;
 };
 
@@ -121,7 +115,7 @@ class Button : public UIElement
 {
 
 public:
-    Button(const char* textin, int x, int y, std::function<void(void*)> CompletionFunction, void* pData1, WORD colourIn = 0)
+    Button(const char* textin, SHORT x, SHORT y, std::function<void(void*)> CompletionFunction, void* pData1, WORD colourIn = 0)
     {
         completionFunction = CompletionFunction;
         pData = pData1;
@@ -149,12 +143,10 @@ private:
     void* pData;
 };
 
-
-//Cursor UIElement
 class Cursor : public UIElement
 {
 public:
-    Cursor(const char* cursor, int x, int y, WORD colour = 0)
+    Cursor(const char* cursor, SHORT x, SHORT y, WORD colour = 0)
     {
         position.X = x;
         position.Y = y;
@@ -162,6 +154,13 @@ public:
         text = cursor;
     }
 
-    void MoveCursor(int direction);
+    void MoveCursor(SHORT direction);
 
+};
+
+struct StartInstallData
+{
+    std::wstring installPath;
+    bool shouldInstallFlowstate;
+    Button* folderSelectButton;
 };

@@ -109,7 +109,6 @@ void StartInstall(void* dataIn)
 
         if (data->shouldInstallFlowstate)
         {
-
             temporaryDLPath = path + flowstateDLPath;
             temporaryExtractPath = path + flowstateExtractPath;
 
@@ -189,7 +188,6 @@ void StartInstall(void* dataIn)
             }
         }
         
-
         std::cout << "\nInstalation completed\nMake sure you have origin or the ea app open, logged in and with apex in the library before running!!!" << std::endl;
         return;
     }
@@ -229,15 +227,23 @@ void SelectionUI()
     std::cout << logo << std::endl;
     SetConsoleTextAttribute(consoleHandle, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 
+    //Print insructions
+    std::cout << "Arrow keys to navigate, enter to select\n1. Select an install folder by pressing enter on \"Select Install Folder\"\n2. Enable or disable installing flowstate (enabled by default)\n3. Press enter on start install\n" << std::endl;
+
     GetConsoleScreenBufferInfo(consoleHandle, &consoleInfo);
 
     StartInstallData InstallData;
     
+    InstallData.shouldInstallFlowstate = true;
+
     ConsoleUI* cUI = new ConsoleUI();
     Button* selectFolder = new Button("Select Install Folder", 2, 0, GetFolderFromUser ,&InstallData, 0);
+
+    InstallData.folderSelectButton = selectFolder;
+
     Toggle* flowstate = new Toggle("Install Flowstate", 2, 1, &InstallData.shouldInstallFlowstate);
     Button* install = new Button("Start Install", 2, 2, StartInstall, &InstallData, FOREGROUND_GREEN);
-    Cursor* cursor = new Cursor(">",0, 0,0);
+    Cursor* cursor = new Cursor(">",0, 0, FOREGROUND_GREEN);
 
     cUI->AddElement(selectFolder);
     cUI->AddElement(install);
@@ -279,5 +285,3 @@ int main()
     system("pause");
   
 }
-
-

@@ -46,8 +46,10 @@ void GetFolderFromUser(void* pData)
                             {
                                 CoUninitialize();
                                 data->installPath = pPath.m_pData;
-                                return;
-                                //return pPath.m_pData;
+                                std::string newLabel = "Selected Directory: ";
+                                newLabel.append(wstringConv(pPath.m_pData));
+                                data->folderSelectButton->ChangeText(newLabel);
+                                return;                            
                             }
                         }
                     }
@@ -242,7 +244,6 @@ char* PrintFiller(size_t size, float fillAmount)
             i++;
         }
 
-        char* fillerPos = filler;
         for (; i < size;)
         {
             *fillerChar = ' ';
@@ -253,8 +254,8 @@ char* PrintFiller(size_t size, float fillAmount)
         return filler;
     }
 
-    char* filler = (char*)malloc(2);
-    *filler = ' \0';
+    char* filler = (char*)malloc(1);
+    *filler = '\0';
     return filler;
 }
 
@@ -307,7 +308,6 @@ void PrintTorrentStatus(const lt::torrent_status& status, COORD* coords)
 
     size_t trailerSize = 0;
     char* trailer = nullptr;
-
 
     switch (status.state)
     {
@@ -365,7 +365,6 @@ void UIElement::DrawElement()
 
     COORD ActualCoords = GetActualCoords();
 
-    HANDLE consoleHandle = GetConsoleHandle();
 
     CONSOLE_SCREEN_BUFFER_INFO consoleInfo;
 
@@ -423,6 +422,25 @@ HANDLE UIElement::GetConsoleHandle()
     return consoleHandle;
 }
 
+void UIElement::ChangeText(std::string& newText)
+{
+    CONSOLE_SCREEN_BUFFER_INFO consoleInfo;
+
+    GetConsoleScreenBufferInfo(consoleHandle, &consoleInfo);
+
+    SetConsoleCursorPosition(consoleHandle, GetActualCoords());
+
+    DWORD numWritten = 0;
+    FillConsoleOutputCharacterA(consoleHandle, ' ', consoleInfo.dwSize.X, GetActualCoords(), &numWritten);
+
+    std::cout << newText;
+    std::cout.flush();
+
+    SetConsoleCursorPosition(consoleHandle, consoleInfo.dwCursorPosition);
+
+    text = newText;
+}
+
 void ConsoleUI::ExecuteInteract(COORD cursorPos, Cursor* cursor)
 {
     for (auto ittr : elements)
@@ -442,7 +460,7 @@ void Toggle::DrawElement()
 
     COORD realCoord = GetActualCoords();
 
-    HANDLE consoleHandle = GetConsoleHandle();
+    //HANDLE consoleHandle = GetConsoleHandle();
 
     CONSOLE_SCREEN_BUFFER_INFO consoleInfo;
 
@@ -469,44 +487,45 @@ void Toggle::DrawElement()
 
     if (*pToggle)
     {
-        std::cout << toggleBoarder[0] << toggleElementOn << toggleBoarder[1];
+        std::cout << toggleBorder[0] << toggleElementOn << toggleBorder[1];
     }
     else
     {
-        std::cout << toggleBoarder[0] << toggleElementOff << toggleBoarder[1];
+        std::cout << toggleBorder[0] << toggleElementOff << toggleBorder[1];
     }
 
 }
 
 void Toggle::ToggleElement()
 {
-    size_t len = strlen(toggleBoarder[0]); //Get the length of the boarder
-    size_t lenTog = strlen(toggleElementOn); //Get the lenth of the toggle
-
-    HANDLE handle = GetConsoleHandle();
+    size_t len = strlen(toggleBorder[0]); //Get the length of the boarder
 
     COORD cursorPos;
     cursorPos.Y = togglePos.Y;
     cursorPos.X = togglePos.X + len;
-    SetConsoleCursorPosition(handle, cursorPos);
+    SetConsoleCursorPosition(consoleHandle, cursorPos);
 
     if (*pToggle) //If its currently on we want to toggle it off
     {
-
         std::cout << toggleElementOff;
-        *pToggle = !*pToggle;
     }
     else
     {
         std::cout << toggleElementOn;
-        *pToggle = !*pToggle;
     }
+
+    *pToggle = !*pToggle;
 }
 
-void Cursor::MoveCursor(int direction)
+void Cursor::MoveCursor(SHORT direction)
 {
     if (direction == 1 && position.Y + 1 <= cursorValidMove[1].Y || direction == -1 && position.Y - 1 >= cursorValidMove[0].Y) //Is the movement we are trying to make valid
     {
+
+        CONSOLE_SCREEN_BUFFER_INFO consoleInfo;
+        GetConsoleScreenBufferInfo(consoleHandle, &consoleInfo);
+        SetConsoleTextAttribute(consoleHandle, Colour);
+
         position.X++;
         SetConsoleCursorPosition(consoleHandle, this->GetActualCoords()); //Move forward to next char
         std::cout << "\b" << " "; //Remove the character and replace with nothing
@@ -516,5 +535,7 @@ void Cursor::MoveCursor(int direction)
         SetConsoleCursorPosition(consoleHandle, this->GetActualCoords());
         std::cout << text;
         SetConsoleCursorPosition(consoleHandle, this->GetActualCoords());
+
+        SetConsoleTextAttribute(consoleHandle, consoleInfo.wAttributes);
     }
 }

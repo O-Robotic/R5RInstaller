@@ -18,8 +18,6 @@ char* convertDataSize(uint64_t bytes)
 
     if (bytes >= dataSizes[1])
     {
-
-
         float convSize = (float)bytes / dataSizes[1];
         size_t size = snprintf(nullptr, 0, "%.2f GB", convSize);
         char* string = (char*)malloc(size + 1);
@@ -29,7 +27,6 @@ char* convertDataSize(uint64_t bytes)
 
     if (bytes >= dataSizes[0])
     {
-
         float convSize = (float)bytes / dataSizes[0];
         size_t size = snprintf(nullptr, 0, "%.2f KB", convSize);
         char* string = (char*)malloc(size + 1);
@@ -102,12 +99,11 @@ bool formatDir(char* dir, char* removeFromPath)
         b += dirLength; //B now has the string - the removeFromPathDir
 
         //B will have the start of our substring
-        while (( *a++ = *b++ ) && *b != (char)"\0")
+        while ( *a++ = *b++ )
         {
             continue;
         }
     }
-
 
     return true;
 }
@@ -205,7 +201,7 @@ bool ExtractZip(std::string filePath, std::string extractPath, COORD* coords, ch
             {
                
                 char filePathCstr[MAX_PATH];
-                size_t written = snprintf(filePathCstr, MAX_PATH, "%s%s", extractPath.c_str(), fileName);
+                snprintf(filePathCstr, MAX_PATH, "%s%s", extractPath.c_str(), fileName);
 
                 if (formatDir(filePathCstr, pathToChop))
                 {
