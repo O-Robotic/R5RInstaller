@@ -227,13 +227,20 @@ bool ExtractZip(std::string filePath, std::string extractPath, COORD* coords, ch
                            
                             DWORD err = GetLastError();
 
-                            switch (err)
-                            {
-                            case(ERROR_SHARING_VIOLATION):
-                                std::cout << "\nAnother program is using your chosen install folder\nClose any programs you may have open that could be using this folder" << std::endl;
-                            }
+                            LPSTR message = nullptr;
+                            DWORD ret = FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, NULL, err, NULL, (LPSTR)&message, 0, NULL);
                             
-                           return false;
+                            if (ret)
+                            {
+                                std::cout << "\n" << message;
+                                LocalFree(message);
+                            }
+                            else
+                            {
+                                std::cout << "\nAn error occured: " << err << std::endl;
+                            }
+
+                            return false;
                         }  
                     }
                 }
