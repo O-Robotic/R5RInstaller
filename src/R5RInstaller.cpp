@@ -47,7 +47,7 @@ void StartInstall(void* dataIn)
 
         if ((avaliableSize.QuadPart / (uint64_t)1024 * 1024 * 1024) < 46)
         {
-            std::cout << "You do not have enough space avaliable in this location!!!" << std::endl;
+            std::cout << "\nYou do not have enough space avaliable in this location." << std::endl;
             return;
         }
 
@@ -59,7 +59,7 @@ void StartInstall(void* dataIn)
 
         if (!rc)
         {
-            std::cout << "\nInstall Failed!!!" << std::endl;
+            std::cout << "\nInstall Failed" << std::endl;
             return;
         }
 
@@ -89,7 +89,7 @@ void StartInstall(void* dataIn)
 
         if (!rc)
         {
-            std::cout << "\nInstall Failed!!!" << std::endl;
+            std::cout << "\nInstall Failed" << std::endl;
             return;
         }
 
@@ -103,7 +103,7 @@ void StartInstall(void* dataIn)
 
         if (!rc)
         {
-            std::cout << "\nInstall Failed!!!" << std::endl;
+            std::cout << "\nInstall Failed" << std::endl;
             return;
         }
 
@@ -119,7 +119,7 @@ void StartInstall(void* dataIn)
 
             if (!rc)
             {
-                std::cout << "\nInstall Failed!!!" << std::endl;
+                std::cout << "\nInstall Failed" << std::endl;
                 return;
             }
 
@@ -137,7 +137,7 @@ void StartInstall(void* dataIn)
 
             if (!rc)
             {
-                std::cout << "\nInstall Failed!!!" << std::endl;
+                std::cout << "\nInstall Failed" << std::endl;
                 return;
             }
 
@@ -167,7 +167,7 @@ void StartInstall(void* dataIn)
 
             if (!rc)
             {
-                std::cout << "\nInstall Failed!!!" << std::endl;
+                std::cout << "\nInstall Failed" << std::endl;
                 return;
             }
 
@@ -183,17 +183,17 @@ void StartInstall(void* dataIn)
 
             if (!rc)
             {
-                std::cout << "\nInstall Failed!!!" << std::endl;
+                std::cout << "\nInstall Failed" << std::endl;
                 return;
             }
         }
         
-        std::cout << "\nInstalation completed\nMake sure you have origin or the ea app open, logged in and with apex in the library before running!!!" << std::endl;
+        std::cout << "\nInstalation completed\nMake sure you have origin or the ea app open, logged in and with apex in the library before running" << std::endl;
         return;
     }
     else
     {
-        std::cout << "Invalid install directory!!!" << std::endl;
+        std::cout << "\nInvalid install directory, the file path must not contain non-latin characters" << std::endl;
     }
 }
 
