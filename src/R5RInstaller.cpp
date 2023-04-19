@@ -188,7 +188,7 @@ void StartInstall(void* dataIn)
             }
         }
         
-        std::cout << "\nInstalation completed\nMake sure you have origin or the ea app open, logged in and with apex in the library before running" << std::endl;
+        std::cout << "\nInstalation completed\nMake sure you have origin or the ea app open, logged in and with apex in the library before running." << std::endl;
         return;
     }
     else
