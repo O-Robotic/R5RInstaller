@@ -125,10 +125,8 @@ bool DownloadTorrent(const std::string& savePath, const char* magnetLink, COORD*
 
     lt::torrent_handle torrentHandle;
 
-    //bool isFinishedTorrent = false;
     while (!isTorrentFinished) //Loop while torrent is not finished
     {
-
         std::vector<lt::alert*> alerts;
         torrentSession.pop_alerts(&alerts);//Get alerts from the running torrent thread
 
@@ -138,6 +136,10 @@ bool DownloadTorrent(const std::string& savePath, const char* magnetLink, COORD*
             if (auto AddTorrentAlert = lt::alert_cast<lt::add_torrent_alert>(alert))
             {
                 torrentHandle = AddTorrentAlert->handle; //When we get the add torrent alert set the handle back to the added torrent that is running in a different thread
+
+                //Add known good seedbox
+                lt::tcp::endpoint peerEndpoint = lt::tcp::endpoint(lt::address::from_string("46.232.210.27"), boost::asio::ip::port_type(64222));
+                torrentHandle.connect_peer(peerEndpoint);
             }
 
             if (auto TorrentFinishedAlert = lt::alert_cast<lt::torrent_finished_alert>(alert))
@@ -148,10 +150,8 @@ bool DownloadTorrent(const std::string& savePath, const char* magnetLink, COORD*
 
             if (auto FileAlert = lt::alert_cast<lt::file_error_alert>(alert))
             {
-
-                std::cout << "\n" << FileAlert->error << std::endl;
+                std::cout << "\n\n" << FileAlert->message() << std::endl;
                 return false;
-
             }
             
             if (const lt::state_update_alert* stateUpdateAlert = lt::alert_cast<lt::state_update_alert>(alert))
