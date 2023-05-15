@@ -181,7 +181,7 @@ bool ReadZipFileFromIndexIntoFile(zip* zip, zip_uint64_t zipFIleIndex, FILE* fil
     return false; //If zip or file pointer is null return false
 }
 
-bool ExtractZip(std::string filePath, std::string extractPath, COORD* coords, char* pathToChop)
+bool ExtractZip(std::string filePath, std::string extractPath, COORD* coords, bool deleteAfterExtract, char* pathToChop)
 {
     int rc = 0;
 
@@ -250,6 +250,11 @@ bool ExtractZip(std::string filePath, std::string extractPath, COORD* coords, ch
 
         zip_close(zip);
 
+        if (deleteAfterExtract)
+        {
+            std::filesystem::remove(filePath);
+        }
+        
         return true;
 
     }

@@ -124,15 +124,13 @@ void StartInstall(void* dataIn)
             }
 
             //Extract the flowstate scripts
-
-
             temporaryDLPath = path + flowstateDLPath;
             temporaryExtractPath = path + flowstateExtractPath;
 
             std::cout << std::endl;
 
             GetConsolePosAndSize(coords);
-            rc = ExtractZip(temporaryDLPath, temporaryExtractPath, coords, (char*)"r5_flowstate-r5_flowstate\\"); //We must specify to remove the "r5_flowstate-r5_flowstate" from the extracted file path 
+            rc = ExtractZip(temporaryDLPath, temporaryExtractPath, coords, true, (char*)"r5_flowstate-r5_flowstate\\"); //We must specify to remove the "r5_flowstate-r5_flowstate" from the extracted file path 
             //because github puts releases into a folder inside the zip
 
             if (!rc)
