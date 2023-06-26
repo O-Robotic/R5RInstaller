@@ -14,3 +14,4 @@ Run the exe, press enter to on select install folder, select an install folder, 
 Known issues
 
 -High memory usage while checking existing files
+-File access errors for specific files, possible libtorrent issue
