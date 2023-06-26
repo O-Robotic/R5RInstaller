@@ -32,7 +32,7 @@ void StartInstall(void* dataIn)
     const std::string path = wstringConv(data->installPath);
 
 
-    if(PathIsDirectoryA(path.c_str()))
+    if(std::filesystem::exists(path.c_str()))
     {
 
         std::string temporaryDLPath;
@@ -187,7 +187,9 @@ void StartInstall(void* dataIn)
         }
         
         std::cout << "\nInstalation completed\nMake sure you have origin or the ea app open, logged in and with apex in the library before running." << std::endl;
-        return;
+
+        system("pause");
+        exit(EXIT_SUCCESS);
     }
     else
     {
